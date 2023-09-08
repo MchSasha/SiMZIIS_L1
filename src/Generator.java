@@ -10,8 +10,8 @@ public class Generator {
         Random random = new Random();
         StringBuilder result = new StringBuilder();
 
-        for (int i = 0; i < length; i++) {
-            int randIndex = random.nextInt(0, ALPHABET.length());
+        for (int iter = 0; iter < length; iter++) {
+            int randIndex = random.nextInt(ALPHABET.length());
 
             result.append(ALPHABET.charAt(randIndex));
         }
@@ -23,8 +23,7 @@ public class Generator {
 
 /*
 * генерация строки с заданной пользователем длиной, состоящей из символов алфавита
-*  в соответствии с вариантом задания (использовать функции rand( ), srand( ) и
-*  инициализацию от таймера);
+*  в соответствии с вариантом задания
 *
 *6) Латиница, строчные и арабские цифры.
 *
