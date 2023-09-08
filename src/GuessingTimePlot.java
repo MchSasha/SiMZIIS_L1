@@ -1,6 +1,7 @@
-import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
+import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
@@ -13,21 +14,27 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class GuessingTimePlot extends JFrame {
-    public GuessingTimePlot(String title) {
-        super(title);
+    public static final int SECONDS_TO_YEARS = 60 * 60 * 24 * 365;
+    public static final String TITLE = "Average password guessing time";
+
+
+    public GuessingTimePlot(int maxPasswordLength) {
+        super(TITLE);
 
         // Create a dataset
-        XYSeries series = new XYSeries("Data Series");
-        for (int x = 1; x < 20; x++) {
-            //series.add(x, Guesser.getAverageGuessingTime(Generator.generateString(x), Generator.ALPHABET)); // Add your own data here
+        XYSeries series = new XYSeries("Среднее время подбора пароля");
+        for (int x = 1; x <= maxPasswordLength; x++) {
+            series.add(x, Guesser.getAverageGuessingTime(
+                    Generator.generateString(x),
+                    Generator.ALPHABET) / SECONDS_TO_YEARS); // Add your own data here
         }
         XYSeriesCollection dataset = new XYSeriesCollection(series);
 
         // Create a chart
         JFreeChart chart = ChartFactory.createXYLineChart(
-                "XY Plot Example", // Chart title
-                "X Axis", // X-axis label
-                "Y Axis", // Y-axis label
+                "Зависимость среднего времени подбора пароля от его длины", // Chart title
+                "Длина пароля", // X-axis label
+                "Среднее время подбора, года", // Y-axis label
                 dataset, // Dataset
                 PlotOrientation.VERTICAL,
                 true, // Show legend
@@ -39,6 +46,10 @@ public class GuessingTimePlot extends JFrame {
         XYPlot plot = chart.getXYPlot();
         XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer(true, false);
         plot.setRenderer(renderer);
+
+        // Set the X-axis to display integer values only
+        NumberAxis xAxis = (NumberAxis) plot.getDomainAxis();
+        xAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
 
         // Create a JPanel to hold the chart
         ChartPanel chartPanel = new ChartPanel(chart);
