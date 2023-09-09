@@ -25,7 +25,6 @@ public class Visualizer {
     }
 
     private static Map<Character, Integer> getCharFrequencyMap(String string) {
-
         return string.chars().mapToObj(ch -> (char) ch)
                 .collect(Collectors.toMap(
                         Function.identity(),
